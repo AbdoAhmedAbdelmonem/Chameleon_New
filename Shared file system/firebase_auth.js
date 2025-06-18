@@ -44,7 +44,9 @@ function initializeGoogleAuth() {
     }
 
     google.accounts.id.initialize({
-        client_id: "81255175502-g2qmbk0298vd7ckh8foa9bp2qdsgh16k.apps.googleusercontent.com",
+        // client_id: "81255175502-g2qmbk0298vd7ckh8foa9bp2qdsgh16k.apps.googleusercontent.com",
+        
+        client_id: "973630054645-shoo5b9ffvdl3pl6bomh1s60oqfsgcpt.apps.googleusercontent.com",
         callback: handleGoogleCredentialResponse,
         auto_select: false,
         ux_mode: "popup",

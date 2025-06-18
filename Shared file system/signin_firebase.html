@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Secure Portal | Login/Signup</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+    <link rel="stylesheet" href="firebaseStyle.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+  </head>
+  <body>
+    <!-- Theme Toggle, assumes this element is present. -->
+    <div id="themeToggle">
+    </div>
+
+    <div class="app-container">
+      <!-- Login Form -->
+      <div id="login-form" class="form-container">
+        <h2>Welcome Back</h2>
+        <div id="login-message" class="message" style="display: none"></div>
+
+        <div class="input-group">
+          <input type="email" id="login-email" placeholder=" " required />
+          <label for="login-email">Email</label>
+        </div>
+
+        <div class="input-group">
+          <div class="password-container">
+            <input
+              type="password"
+              id="login-password"
+              placeholder=" "
+              required
+            />
+            <label for="login-password">Password</label>
+            <span class="toggle-password" id="toggleLoginPassword">
+              <i class="far fa-eye"></i>
+            </span>
+          </div>
+        </div>
+
+        <button id="login-button">
+          <span id="login-text">Login</span>
+          <div class="spinner" id="login-spinner"></div>
+        </button>
+
+        <div class="switch-form">
+          Don't have an account? <a onclick="showSignup()">Sign up</a>
+        </div>
+
+        <div class="google-signin-section">
+          <p>Or continue with</p>
+          <div id="signin-button"></div>
+        </div>
+
+        <div class="security-info">
+          <i class="fas fa-lock"></i> Your data is securely encrypted
+        </div>
+      </div>
+
+      <!-- Signup Form -->
+      <div id="signup-form" class="form-container" style="display: none">
+        <h2>Create Account</h2>
+        <div id="signup-message" class="message" style="display: none"></div>
+
+        <div class="input-group">
+          <input type="text" id="signup-name" placeholder=" " required />
+          <label for="signup-name">Full Name</label>
+        </div>
+
+        <div class="input-group">
+          <input type="email" id="signup-email" placeholder=" " required />
+          <label for="signup-email">Email</label>
+        </div>
+
+        <div class="input-group">
+          <div class="password-container">
+            <input
+              type="password"
+              id="signup-password"
+              placeholder=" "
+              required
+            />
+            <label for="signup-password">Password</label>
+            <span class="toggle-password" id="toggleSignupPassword">
+              <i class="far fa-eye"></i>
+            </span>
+          </div>
+          <div class="password-strength">
+            <div class="strength-meter" id="password-strength-meter"></div>
+          </div>
+        </div>
+
+        <button id="signup-button">
+          <span id="signup-text">Sign Up</span>
+          <div class="spinner" id="signup-spinner"></div>
+        </button>
+
+        <div class="switch-form">
+          Already have an account? <a onclick="showLogin()">Login</a>
+        </div>
+
+        <div class="google-signin-section">
+          <p>Or continue with</p>
+          <div id="signup-signin-button"></div>
+        </div>
+
+        <div class="security-info">
+          <i class="fas fa-shield-alt"></i> We never store plain text passwords
+        </div>
+      </div>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <!-- Google Identity Services Library -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <!-- Your custom Firebase authentication script -->
+    <script src="firebase_auth.js"></script>
+  </body>
+</html>

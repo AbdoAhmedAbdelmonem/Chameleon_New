@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Google Account Display</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+            color: #e0e0e0;
+            background-color: #0d0f11;
+        }
+        #user-info {
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background-color: #212223;
+        }
+        #signin-button {
+            margin: 20px 0;
+        }
+        .profile-pic {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin: 10px 0;
+        }
+        button {
+            background-color: #4285F4;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        button:hover {
+            background-color: #3367D6;
+        }
+    </style>
+</head>
+<body>
+    <h1>Google Account Information</h1>
+    <p>This page displays your currently logged-in Google account information.</p>
+    
+    <div id="signin-button"></div>
+    
+    <div id="user-info">
+        <p>No Google account is currently signed in.</p>
+    </div>
+
+    <!-- Load Google API library -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+    <script>
+        // Initialize Google Auth
+        function initializeGoogleAuth() {
+            google.accounts.id.initialize({
+                client_id: "81255175502-g2qmbk0298vd7ckh8foa9bp2qdsgh16k.apps.googleusercontent.com",
+                callback: handleCredentialResponse,
+                auto_select: true // Enable auto-select for returning users
+            });
+            
+            // Render the sign-in button
+            google.accounts.id.renderButton(
+                document.getElementById("signin-button"),
+                { 
+                    theme: "outline", 
+                    size: "large",
+                    width: 250
+                }
+            );
+            
+            // Check if we have a stored user
+            const storedUser = localStorage.getItem('googleUser');
+            if (storedUser) {
+                try {
+                    const user = JSON.parse(storedUser);
+                    displayUserInfo(user);
+                } catch (e) {
+                    localStorage.removeItem('googleUser');
+                }
+            } else {
+                // Try to automatically sign in if possible
+                google.accounts.id.prompt();
+            }
+        }
+        
+        // Handle the login response
+        function handleCredentialResponse(response) {
+            const responsePayload = parseJwt(response.credential);
+            const user = {
+                name: responsePayload.name,
+                email: responsePayload.email,
+                picture: responsePayload.picture,
+                email_verified: responsePayload.email_verified,
+                token: response.credential // Store the token for future use
+            };
+            
+            // Store user in localStorage
+            localStorage.setItem('googleUser', JSON.stringify(user));
+            
+            // Display user info
+            displayUserInfo(user);
+        }
+        
+        // Display user information
+        function displayUserInfo(user) {
+            document.getElementById("user-info").innerHTML = `
+                <h2>Logged in as:</h2>
+                <img class="profile-pic" src="${user.picture}" alt="Profile picture">
+                <p><strong>Name:</strong> ${user.name}</p>
+                <p><strong>Email:</strong> ${user.email}</p>
+                <p><strong>Email verified:</strong> ${user.email_verified ? '✅ Yes' : '❌ No'}</p>
+                <button onclick="signOut()">Sign Out</button>
+            `;
+        }
+        
+        // Parse JWT token
+        function parseJwt(token) {
+            const base64Url = token.split('.')[1];
+            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            const jsonPayload = decodeURIComponent(
+                atob(base64).split('').map(function(c) {
+                    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+                }).join(''));
+            
+            return JSON.parse(jsonPayload);
+        }
+        
+        // Sign out function
+        function signOut() {
+            // Clear the stored user
+            localStorage.removeItem('googleUser');
+            
+            // Disable auto-select
+            google.accounts.id.disableAutoSelect();
+            
+            // Reset UI
+            document.getElementById("user-info").innerHTML = "<p>Successfully signed out.</p>";
+            
+            // Re-render the sign-in button
+            initializeGoogleAuth();
+        }
+        
+        // Initialize when Google API is loaded
+        window.onload = function() {
+            // Wait for Google API to load
+            const checkGoogle = setInterval(function() {
+                if (window.google && google.accounts) {
+                    clearInterval(checkGoogle);
+                    initializeGoogleAuth();
+                }
+            }, 100);
+        };
+    </script>
+</body>
+</html>

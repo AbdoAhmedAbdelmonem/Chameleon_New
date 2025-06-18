@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chameleon FCDS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Oswald:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
+    ></script>
+    <link rel="stylesheet" href="Chameleon_new/style.css" />
+    <link rel="icon" href="MDA/1212-removebg-preview.png" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+    />
+    <!-- Add Font Awesome for icons if not already included in style.css -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+      xintegrity="sha512-1ycn6IcaQQ40jBliWE/C/R+V+sT/mHq2B+QhP+PqR/B9eD+n7bF1XQjYj5eT1Ww5tD4lq+c7Jz5hWjF5hWw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+
+    <!-- Firebase SDKs - IMPORTANT: Load these before your custom firebase_auth.js -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <!-- Google Sign-In Platform Library -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+  </head>
+  <body id="top">
+    <header class="header">
+      <div class="overlay" data-overlay></div>
+
+      <div class="container">
+        <a href="#" class="logo">
+          <img src="MDA/1212-removebg-preview.png" alt="" />
+        </a>
+
+        <button
+          class="nav-open-btn"
+          data-nav-open-btn
+          aria-label="Open navigation menu"
+        >
+          <ion-icon name="menu-outline"></ion-icon>
+        </button>
+
+        <nav class="navbar" data-navbar>
+          <div class="navbar-top">
+            <a href="#" class="logo">
+              <img src="MDA/1212-removebg-preview.png" alt="" />
+            </a>
+
+            <button class="nav-close-btn" data-nav-close-btn>
+              <ion-icon name="close-outline"></ion-icon>
+            </button>
+          </div>
+          <div
+            class="navbar-background"
+            style="
+              background-color: #000000d2;
+              padding: 10px;
+              border-radius: 12px;
+              height: 110px;
+            "
+          >
+            <ul class="navbar-list">
+              <li><a href="#hero" class="navbar-link">Home</a></li>
+              <li>
+                <a href="#Specialization" class="navbar-link">Specialization</a>
+              </li>
+              <li><a href="#contact" class="navbar-link">Contact</a></li>
+              <li>
+                <!-- This is the login/user status link -->
+                <a
+                  href="Shared file system/signin_firebase.html"
+                  id="auth-nav-link"
+                  class="navbar-link"
+                >
+                  <span id="login-status-text">Login</span>
+                </a>
+              </li>
+            </ul>
+
+            <ul class="nav-social-list">
+              <li>
+                <a href="#" class="social-link"
+                  ><ion-icon name="logo-facebook"></ion-icon
+                ></a>
+              </li>
+              <li>
+                <a href="#" class="social-link"
+                  ><ion-icon name="logo-instagram"></ion-icon
+                ></a>
+              </li>
+              <li>
+                <a href="#" class="social-link"
+                  ><ion-icon name="logo-github"></ion-icon
+                ></a>
+              </li>
+              <li>
+                <a href="#" class="social-link"
+                  ><ion-icon name="logo-linkedin"></ion-icon
+                ></a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+    </header>
+    <main>
+      <article>
+        <section class="hero" id="hero">
+          <div class="container">
+            <p class="hero-subtitle">Welcome it's</p>
+            <h1 class="h1 hero-title">Chameleon</h1>
+
+            <p>
+              Chameleon is a comprehensive educational site that aims to provide
+              students and faculty with a wealth of resources to enhance
+              learning and research. My platform is dedicated to fostering a
+              collaborative and engaging environment for all computer science
+              and data science enthusiasts.
+            </p>
+
+            <div class="btn-group">
+              <button class="btn btn-primary">
+                <span>Start the Future</span>
+                <ion-icon name="sparkles-outline"></ion-icon>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <div class="section-wrapper">
+          <section class="about" id="about">
+            <div class="container">
+              <figure class="about-banner">
+                <img
+                  src="https://onlinegiftools.com/images/gif/illustrations/change-gif-brightness.png"
+                  alt=""
+                  style="width: 386px"
+                />
+              </figure>
+
+              <div
+                class="about-content"
+                style="
+                  border-radius: 90px;
+                  border-left: 2px solid var(--main-color);
+                  border-bottom: 2px solid var(--main-color);
+                "
+              >
+                <p class="about-subtitle">Final Fantasy Update</p>
+                <h2 class="about-title">
+                  New UI only For
+                  <strong style="font-family: Licorice">You</strong>
+                </h2>
+
+                <p class="about-text">
+                  In the world of creativity, our star shines in the sky of
+                  educational websites.
+                  <strong style="color: var(--main-color);"><span id="user-status-text"></span></strong> — thank
+                  you for 356 days of continuous support that have made this
+                  website a legacy for every student who has passed through the
+                  college.
+                </p>
+
+                <p class="about-bottom-text">
+                  <ion-icon name="arrow-forward-circle-outline"></ion-icon>
+                  <span>This is what FCDS deserves</span>
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <!-- New Creative Gallery Section Starts Here -->
+          <div class="container swiper" style="margin-bottom: 150px">
+            <h2 class="h2 section-title">
+              Why you might love this
+              <strong style="color: var(--main-color)">version</strong> ?
+            </h2>
+            <div class="wrapper">
+              <div class="card-list swiper-wrapper">
+                <!-- Single Card -->
+                <div class="card swiper-slide">
+                  <div class="card-image">
+                    <img
+                      src="https://onlinetools.com/images/webp/illustrations/remove-webp-background.png"
+                      alt="Design Trends"
+                    />
+                  </div>
+                  <div class="card-content">
+                    <h3 class="card-title">Modern UI Trends for 2025</h3>
+                    <p class="card-text">
+                      Explore the latest user interface design trends that are
+                      shaping the digital landscape this year. From neumorphism
+                      to glassmorphism and beyond.
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Single Card -->
+                <div class="card swiper-slide">
+                  <div class="card-image">
+                    <img
+                      src="https://onlinetools.com/images/team.png"
+                      alt="Development"
+                    />
+                  </div>
+                  <div class="card-content">
+                    <h3 class="card-title">Best Frontend Frameworks</h3>
+                    <p class="card-text">
+                      A comprehensive comparison of the most popular frontend
+                      frameworks and libraries that developers are using to
+                      build modern web applications.
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Single Card -->
+                <div class="card swiper-slide">
+                  <div class="card-image">
+                    <img
+                      src="https://onlinegiftools.com/images/gif/illustrations/sharpen-gif.png"
+                      alt="AI"
+                    />
+                  </div>
+                  <div class="card-content">
+                    <h3 class="card-title">AI User Experience Design</h3>
+                    <p class="card-text">
+                      How artificial intelligence is revolutionizing user
+                      experience design and enabling more personalized,
+                      intuitive interfaces for digital products.
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Single Card -->
+                <div class="card swiper-slide">
+                  <div class="card-image">
+                    <img
+                      src="https://onlinegiftools.com/images/gif/illustrations/change-gif-duration.png"
+                      alt="Productivity"
+                    />
+                  </div>
+                  <div class="card-content">
+                    <h3 class="card-title">Workspace Design for Focus</h3>
+                    <p class="card-text">
+                      Designing workspaces that maximize productivity and
+                      minimize distractions for creative professionals in the
+                      hybrid work environment.
+                    </p>
+                  </div>
+                </div>
+                <!-- Single Card -->
+                <div class="card swiper-slide">
+                  <div class="card-image">
+                    <img
+                      src="https://onlinetools.com/images/math/illustrations/generate-moore-curve.png"
+                      alt="Animation"
+                    />
+                  </div>
+                  <div class="card-content">
+                    <h3 class="card-title">Micro Animation Designs</h3>
+                    <p class="card-text">
+                      The small animations and interactions that make a big
+                      difference in user experience and how to implement them
+                      effectively in your designs.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <!-- Pagination -->
+              <div class="swiper-pagination"></div>
+              <!-- Navigation Buttons -->
+              <div
+                class="swiper-slide-button swiper-button-prev"
+                style="color: var(--main-color)"
+              ></div>
+              <div
+                class="swiper-slide-button swiper-button-next"
+                style="color: var(--main-color)"
+              ></div>
+            </div>
+          </div>
+          <!-- New Creative Gallery Section Ends Here -->
+
+          <section class="Specialization" id="Specialization">
+            <div class="container">
+              <h2 class="h2 section-title">
+                Check our
+                <strong style="color: var(--main-color)">Specialization</strong>
+              </h2>
+
+              <ul class="gears-list">
+                <li>
+                  <div class="gears-card">
+                    <a href="">
+                      <div class="card-banner">
+                        <h1>GN</h1>
+                        <div class="card-time-wrapper">
+                          <ion-icon name="time-outline"></ion-icon>
+                          <span>18/8/2025</span>
+                        </div>
+                      </div>
+                    </a>
+                    <div class="card-content">
+                      <div class="card-title-wrapper">
+                        <h3 class="h3 card-title">General Department</h3>
+                        <p class="card-subtitle">
+                          Faculty of Computer and data Science
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+
+                <li>
+                  <div class="gears-card">
+                    <a href="">
+                      <div class="card-banner">
+                        <h1>AI</h1>
+                        <div class="card-time-wrapper">
+                          <ion-icon name="time-outline"></ion-icon>
+                          <span>18/8/2025</span>
+                        </div>
+                      </div>
+                    </a>
+                    <div class="card-content">
+                      <div class="card-title-wrapper">
+                        <h3 class="h3 card-title">
+                          Artificial Intelligence Department
+                        </h3>
+                        <p class="card-subtitle">
+                          Faculty of Computer and data Science
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+
+                <li>
+                  <div class="gears-card">
+                    <a href="">
+                      <div class="card-banner">
+                        <h1>CS</h1>
+                        <div class="card-time-wrapper">
+                          <ion-icon name="time-outline"></ion-icon>
+                          <span>18/8/2025</span>
+                        </div>
+                      </div>
+                    </a>
+                    <div class="card-content">
+                      <div class="card-title-wrapper">
+                        <h3 class="h3 card-title">Cyber Security Department</h3>
+                        <p class="card-subtitle">
+                          Faculty of Computer and data Science
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </div>
+      </article>
+    </main>
+
+    <footer>
+      <div class="footer-top">
+        <div class="container">
+          <div class="footer-brand-wrapper">
+            <a href="#" class="logo"
+              ><img src="MDA/1212-removebg-preview.png" alt="GameX Logo"
+            /></a>
+
+            <div class="footer-menu-wrapper">
+              <ul class="footer-menu-list">
+                <li><a href="#hero" class="footer-menu-link">Home</a></li>
+                <li><a href="#about" class="footer-menu-link">About</a></li>
+                <li>
+                  <a href="#Specialization" class="footer-menu-link"
+                    >Specialization</a
+                  >
+                </li>
+                <li><a href="#contact" class="footer-menu-link">Contact</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="footer-quicklinks">
+            <ul class="quicklink-list">
+              <li><a href="#" class="quicklink-item">FAQ</a></li>
+              <li><a href="#" class="quicklink-item">Help Center</a></li>
+              <li><a href="#" class="quicklink-item">Terms of use</a></li>
+              <li><a href="#" class="quicklink-item">Privacy</a></li>
+            </ul>
+
+            <ul class="footer-social-list">
+              <li>
+                <a href="#" class="footer-social-link"
+                  ><ion-icon
+                    name="logo-facebook"
+                    style="color: rgb(57, 104, 192)"
+                  ></ion-icon
+                ></a>
+              </li>
+              <li>
+                <a href="#" class="footer-social-link"
+                  ><ion-icon
+                    name="logo-linkedin"
+                    style="color: rgb(18, 80, 194)"
+                  ></ion-icon
+                ></a>
+              </li>
+              <li>
+                <a href="#" class="footer-social-link"
+                  ><ion-icon
+                    name="logo-whatsapp"
+                    style="color: green"
+                  ></ion-icon
+                ></a>
+              </li>
+              <li>
+                <a href="#" class="footer-social-link"
+                  ><ion-icon name="logo-github" style="color: white"></ion-icon
+                ></a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div class="container">
+          <p class="copyright">
+            Copyright &copy; 2025 <a href="#">Chameleon</a> All rights reserved
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <a href="#top" class="btn btn-primary go-top active" data-go-top
+      ><ion-icon name="chevron-up-outline"></ion-icon
+    ></a>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <script src="Chameleon_new/script.js"></script>
+    <script src="Shared file system/firebase_auth.js"></script>
+  </body>
+</html>

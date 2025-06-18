@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap");
+
+      :root {
+        --primary-color: #eab010;
+        --secondary-color: #23272a;
+        --background-color: #1a1e20; /* Slightly adjusted to fit the theme */
+        --text-color: #f1f1f1;
+        --card-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+        --border-radius: 12px;
+        --transition-speed: 0.3s ease;
+      }
+
+      body {
+        background-color: var(--background-color);
+        color: var(--text-color);
+        font-family: "Poppins", sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+        overflow: hidden; /* Prevent scrollbar from animation */
+      }
+
+      .dashboard-container {
+        background: var(--secondary-color);
+        border-radius: var(--border-radius);
+        box-shadow: var(--card-shadow);
+        padding: 40px 30px;
+        max-width: 450px;
+        width: 90%; /* Adjusted for better mobile scaling */
+        text-align: center;
+        transform: translateY(20px);
+        opacity: 0;
+        animation: fadeInPop 0.6s forwards ease-out;
+        position: relative;
+        overflow: hidden; /* For pseudo-element background */
+      }
+
+      /* Decorative background element */
+      .dashboard-container::before {
+        content: "";
+        position: absolute;
+        top: -50px;
+        left: -50px;
+        right: -50px;
+        bottom: -50px;
+        background: radial-gradient(
+            circle at top left,
+            rgba(234, 176, 16, 0.15),
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at bottom right,
+            rgba(234, 176, 16, 0.15),
+            transparent 50%
+          );
+        z-index: 0;
+        opacity: 0.7;
+      }
+
+      .form-container {
+        position: relative; /* To keep content above pseudo-element */
+        z-index: 1;
+      }
+
+      h2 {
+        color: var(--primary-color);
+        margin-bottom: 20px;
+        font-weight: 600;
+        animation: slideInLeft 0.7s forwards;
+      }
+
+      p {
+        margin-bottom: 10px;
+        color: #b0b0b0;
+        font-weight: 300;
+        animation: slideInRight 0.8s forwards;
+        opacity: 0;
+      }
+      p:nth-of-type(1) {
+        animation-delay: 0.1s;
+      }
+      p:nth-of-type(2) {
+        animation-delay: 0.2s;
+      }
+
+      .profile-pic {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        border: 3px solid var(--primary-color);
+        margin-bottom: 25px;
+        object-fit: cover;
+        box-shadow: 0 0 15px rgba(234, 176, 16, 0.4);
+        transition: transform 0.3s ease-in-out;
+        animation: zoomIn 0.5s forwards;
+        opacity: 0;
+        animation-delay: 0.3s;
+        display: block; /* Make it a block-level element */
+        margin-left: auto; /* Center horizontally */
+        margin-right: auto; /* Center horizontally */
+      }
+
+      .profile-pic:hover {
+        transform: scale(1.05) rotate(3deg);
+      }
+
+      /* Button Styling - Applied to both back and logout buttons */
+      .action-button {
+        background: var(--primary-color);
+        color: var(--secondary-color);
+        border: none;
+        padding: 12px 28px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 1.1em;
+        font-weight: 600;
+        transition: background var(--transition-speed),
+          transform var(--transition-speed), box-shadow var(--transition-speed);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        width: auto; /* Allow button to size to content */
+        min-width: 150px;
+        margin-left: auto;
+        margin-right: auto;
+        animation: fadeInScale 0.7s forwards;
+        opacity: 0;
+      }
+
+      .action-button:hover {
+        background: #d4a00f; /* Slightly darker primary */
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(234, 176, 16, 0.3);
+      }
+
+      .action-button:active {
+        transform: translateY(0);
+        box-shadow: none;
+      }
+
+      /* Specific margin for buttons */
+      button#logout-button {
+        margin-top: 30px;
+        animation-delay: 0.4s;
+      }
+
+      button#back-button {
+        background: #444; /* Darker background for back button */
+        color: var(--text-color);
+        margin-top: 15px; /* Spacing between logout and back buttons */
+        animation-delay: 0.5s; /* Slightly delayed animation for back button */
+      }
+
+      button#back-button:hover {
+        background: #555;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      }
+
+      .spinner {
+        display: none;
+        color: var(--secondary-color);
+        font-size: 0.9em;
+      }
+
+      .security-info {
+        margin-top: 25px;
+        color: #43b581;
+        font-size: 0.95em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        opacity: 0;
+        animation: fadeIn 0.9s forwards;
+        animation-delay: 0.6s;
+      }
+
+      .security-info .fas {
+        color: #43b581; /* Ensure green for checkmark */
+      }
+
+      .loading {
+        text-align: center;
+        padding: 20px;
+        font-size: 1.1em;
+        color: #aaa;
+        animation: pulse 1.5s infinite ease-in-out;
+      }
+
+      #not-logged-in {
+        text-align: center;
+        animation: fadeIn 0.8s forwards;
+        opacity: 0;
+      }
+
+      #not-logged-in h2 {
+        color: #f04747; /* Error red */
+        margin-bottom: 15px;
+      }
+
+      #not-logged-in p {
+        color: #ccc;
+        margin-bottom: 20px;
+      }
+
+      #not-logged-in a {
+        color: var(--primary-color);
+        text-decoration: none;
+        font-weight: 600;
+        transition: color var(--transition-speed);
+      }
+
+      #not-logged-in a:hover {
+        color: #fff;
+        text-decoration: underline;
+      }
+
+      /* Keyframe Animations */
+      @keyframes fadeInPop {
+        from {
+          opacity: 0;
+          transform: translateY(40px) scale(0.95);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      @keyframes slideInLeft {
+        from {
+          opacity: 0;
+          transform: translateX(-30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      @keyframes slideInRight {
+        from {
+          opacity: 0;
+          transform: translateX(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      @keyframes zoomIn {
+        from {
+          opacity: 0;
+          transform: scale(0.7);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      @keyframes fadeInScale {
+        from {
+          opacity: 0;
+          transform: scale(0.8);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      @keyframes pulse {
+        0% {
+          opacity: 0.7;
+        }
+        50% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 0.7;
+        }
+      }
+
+      /* --- Responsive Design --- */
+      @media (max-width: 600px) {
+        body {
+          overflow-y: auto;
+          align-items: flex-start;
+          padding: 20px 0;
+          min-height: auto;
+        }
+
+        .dashboard-container {
+          margin: 192px auto;
+          padding: 30px 20px;
+          max-width: 76%;
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        h2 {
+          font-size: 1.6em;
+          margin-bottom: 15px;
+        }
+
+        p {
+          font-size: 0.9em;
+        }
+
+        .profile-pic {
+          width: 100px;
+          height: 100px;
+          margin-bottom: 20px;
+        }
+
+        .action-button {
+          padding: 10px 20px;
+          font-size: 1em;
+          min-width: 120px;
+        }
+
+        button#logout-button {
+          margin-top: 20px; /* Adjust spacing for mobile */
+        }
+
+        button#back-button {
+          margin-top: 10px; /* Adjust spacing for mobile */
+        }
+
+        .security-info {
+          font-size: 0.85em;
+          margin-top: 20px;
+        }
+
+        .loading {
+          font-size: 1em;
+        }
+
+        #not-logged-in h2 {
+          font-size: 1.5em;
+        }
+      }
+
+      @media (max-width: 400px) {
+        .dashboard-container {
+          padding: 25px 15px;
+        }
+        h2 {
+          font-size: 1.4em;
+        }
+        p {
+          font-size: 0.85em;
+        }
+        .action-button {
+          font-size: 0.95em;
+        }
+        .security-info {
+          font-size: 0.8em;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="dashboard-container">
+      <div id="loading" class="loading">
+        <p>
+          <i class="fas fa-spinner fa-spin"></i> Checking authentication
+          status...
+        </p>
+      </div>
+
+      <div id="user-dashboard" class="form-container" style="display: none">
+        <h2>Welcome, <span id="user-name"></span>!</h2>
+        <img
+          id="user-pic"
+          class="profile-pic"
+          style="display: none"
+          alt="Profile picture"
+        />
+        <p>Email: <span id="user-email"></span></p>
+        <p>Last login: <span id="last-login"></span></p>
+        <p id="custom-info"></p>
+        <button id="logout-button" class="action-button">
+          <span id="logout-text">Logout</span>
+          <div class="spinner" id="logout-spinner">
+            <i class="fas fa-spinner fa-spin"></i> Redirecting...
+          </div>
+        </button>
+        <button id="back-button" class="action-button">
+          <i class="fas fa-arrow-left"></i> Back
+        </button>
+
+        <div class="security-info">
+          <i class="fas fa-check-circle"></i> Secure session active
+        </div>
+      </div>
+
+      <div id="not-logged-in" style="display: none">
+        <h2>Access Denied</h2>
+        <p>You need to be logged in to view this page.</p>
+        <a href="../Shared file system/signin_firebase.html"
+          >Go to Login Page</a
+        >
+      </div>
+    </div>
+    <script src="Admins.js"></script>
+
+    <script>
+      // Your Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyCoObLpySHlwI8s65VZhVtA-yKrBp9okj0",
+        authDomain: "chameleon-51d0f.firebaseapp.com",
+        projectId: "chameleon-51d0f",
+        storageBucket: "chameleon-51d0f.appspot.com",
+        messagingSenderId: "973630054645",
+        appId: "1:973630054645:web:50befbdd13bc1da6c525bc",
+        measurementId: "G-MF62V2Y5XN",
+        databaseURL: "https://chameleon-51d0f-default-rtdb.firebaseio.com/",
+      };
+
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      const auth = firebase.auth();
+
+      // DOM elements
+      const loadingElement = document.getElementById("loading");
+      const dashboardElement = document.getElementById("user-dashboard");
+      const notLoggedInElement = document.getElementById("not-logged-in");
+      const userNameElement = document.getElementById("user-name");
+      const userEmailElement = document.getElementById("user-email");
+      const userPicElement = document.getElementById("user-pic");
+      const lastLoginElement = document.getElementById("last-login");
+      const logoutButton = document.getElementById("logout-button");
+      const logoutSpinner = document.getElementById("logout-spinner");
+      const logoutText = document.getElementById("logout-text");
+      const backButton = document.getElementById("back-button"); // Get the new back button
+
+      // Check auth state
+      auth.onAuthStateChanged((user) => {
+        loadingElement.style.display = "none";
+
+        if (user) {
+          // User is logged in
+          dashboardElement.style.display = "block";
+          notLoggedInElement.style.display = "none";
+
+          // Populate user data
+          userNameElement.textContent =
+            user.displayName || user.email.split("@")[0];
+          userEmailElement.textContent = user.email;
+
+          // Call isAdmin to set custom info if user is admin
+          const customInfo = document.getElementById("custom-info");
+          if (isAdmin(user.email)) {
+            if (customInfo) {
+              customInfo.textContent = "Premium Admin";
+              customInfo.style.color = "gold";
+              customInfo.style.fontWeight = "bold";
+            }
+          } else {
+            if (customInfo) {
+              customInfo.textContent = "Ordinary User";
+              customInfo.style.color = "lightgreen";
+              customInfo.style.fontWeight = "bold";
+              console.log(user.email);
+              console.log(isAdmin(user.email));
+            }
+          }
+
+          // Set profile picture if available
+          if (user.photoURL) {
+            userPicElement.src = user.photoURL;
+            userPicElement.style.display = "block";
+          }
+          // Format last login time
+          if (user.metadata?.lastSignInTime) {
+            const lastLogin = new Date(user.metadata.lastSignInTime);
+            lastLoginElement.textContent =
+              lastLogin.toLocaleDateString() +
+              " at " +
+              lastLogin.toLocaleTimeString();
+          }
+        } else {
+          // User is not logged in
+          dashboardElement.style.display = "none";
+          notLoggedInElement.style.display = "block";
+        }
+      });
+
+      // Logout functionality
+      logoutButton.addEventListener("click", () => {
+        logoutText.style.display = "none";
+        logoutSpinner.style.display = "block";
+        logoutButton.disabled = true;
+
+        auth
+          .signOut()
+          .then(() => {
+            // Redirect after logout
+            window.location.href = "../Shared file system/signin_firebase.html";
+          })
+          .catch((error) => {
+            console.error("Logout error:", error);
+            logoutText.style.display = "inline";
+            logoutSpinner.style.display = "none";
+            logoutButton.disabled = false;
+            alert("Logout failed. Please try again.");
+          });
+      });
+
+      // Back button functionality
+      if (backButton) {
+        // Ensure the button exists before adding listener
+        backButton.addEventListener("click", () => {
+          window.history.back(); // Go to the previous page in history
+        });
+      }
+    </script>
+  </body>
+</html>

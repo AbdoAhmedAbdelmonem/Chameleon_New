@@ -2005,11 +2005,6 @@ footer {
     opacity: 1;
     visibility: visible;
   }
-  
-  /* Logo in Navbar */
-  .navbar-top .logo img {
-    max-height: 50px;
-  }
 }
 
 /* Animation for menu items */

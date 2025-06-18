@@ -21,6 +21,10 @@
         margin: 0;
         padding: 0;
       }
+      #signin-button {
+        display: grid;
+        justify-content: center;
+      }
 
       body {
         font-family: "Poppins", sans-serif;

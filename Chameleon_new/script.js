@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const navbar = document.querySelector('[data-navbar]');
     const overlay = document.querySelector('[data-overlay]');
     const goTopBtn = document.querySelector('[data-go-top]');
-    const navLinks = document.querySelectorAll('.navbar-link');
+    const navLinks = document.querySelectorAll('.navbar-list .navbar-link'); // Be more specific to avoid conflicts
     const socialLinks = document.querySelectorAll('.nav-social-list .social-link');
 
     // Enhanced mobile menu toggle with animations
@@ -17,6 +17,8 @@ document.addEventListener('DOMContentLoaded', () => {
         // Animate menu items
         navLinks.forEach((link, index) => {
             link.style.animation = `menuItemFadeIn 0.5s ease forwards ${index * 0.1 + 0.3}s`;
+            // Add listener to close menu only when nav link is clicked within the mobile menu
+            link.addEventListener("click", closeMenu);
         });
         
         // Animate social icons
@@ -35,21 +37,19 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Reset animations
         navLinks.forEach(link => {
-            link.style.animation = 'none';
-            setTimeout(() => {
-                link.style.animation = '';
-                link.style.opacity = '0';
-                link.style.transform = 'translateX(30px)';
-            }, 10);
+            link.style.animation = 'none'; // Clear animation
+            // Set opacity and transform to empty strings to remove inline styles
+            link.style.opacity = '';
+            link.style.transform = '';
+            // Remove event listener after menu closes
+            link.removeEventListener("click", closeMenu);
         });
         
         socialLinks.forEach(link => {
-            link.style.animation = 'none';
-            setTimeout(() => {
-                link.style.animation = '';
-                link.style.opacity = '0';
-                link.style.transform = 'translateY(20px)';
-            }, 10);
+            link.style.animation = 'none'; // Clear animation
+            // Set opacity and transform to empty strings to remove inline styles
+            link.style.opacity = '';
+            link.style.transform = '';
         });
         
         // Accessibility
@@ -59,20 +59,6 @@ document.addEventListener('DOMContentLoaded', () => {
     navOpenBtn.addEventListener("click", openMenu);
     navCloseBtn.addEventListener("click", closeMenu);
     overlay.addEventListener("click", closeMenu);
-
-    // Close menu when clicking on a link
-    navLinks.forEach(link => {
-        link.addEventListener("click", closeMenu);
-    });
-
-    // Go-to-top button visibility
-    window.addEventListener('scroll', () => {
-        if (window.scrollY >= 200) {
-            goTopBtn?.classList.add('active');
-        } else {
-            goTopBtn?.classList.remove('active');
-        }
-    });
 
     // --- Gallery Logic ---
     const galleryTrack = document.querySelector('[data-gallery-track]');
